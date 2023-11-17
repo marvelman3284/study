@@ -1,5 +1,5 @@
 import { client } from "../connect";
-import { deckPOST, postResponse } from "@/app/helpers/types";
+import { deckGET, deckPOST, postResponse } from "@/app/helpers/types";
 import { NextResponse } from "next/server";
 import { cleanSets } from "../validate";
 
@@ -14,7 +14,20 @@ export async function GET() {
 
     const all = await deck.toArray();
 
-    return Response.json(all);
+    const res: deckGET[] = [];
+
+    for (let item of all) {
+      res.push(
+        {
+          id: item._id.toString(),
+          Title: item.Title,
+          Description: item.Description,
+          User_ID: item.User_ID
+        }
+      )
+    }
+
+    return Response.json(res);
   } catch (e) {
     console.error(e);
   }

@@ -14,18 +14,18 @@ export default function Home() {
 
       <div className={styles.grid}>
         <Link
-          href="/create"
+          href="/create-deck"
           className={styles.card}
           rel="noopener noreferrer"
         >
           <h2>
-            Create study set <span>-&gt;</span>
+            Create a new study deck <span>-&gt;</span>
           </h2>
           <p>Exactly what the title says</p>
         </Link>
 
-        <a
-          href="ROUTE TO /learn"
+        <Link
+          href="/view"
           className={styles.card}
           target="_blank"
           rel="noopener noreferrer"
@@ -34,7 +34,7 @@ export default function Home() {
             Learn <span>-&gt;</span>
           </h2>
           <p>Review your study sets</p>
-        </a>
+        </Link>
       </div>
     </main>
   )

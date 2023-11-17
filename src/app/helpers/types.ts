@@ -4,12 +4,20 @@ type cardPOST = {
   Deck_ID: string,
   FrontText: string,
   BackText: string,
+  id?: ObjectId
 }
 
+type deckGET = {
+  User_ID: string,
+  Title: string,
+  Description?: string
+  id: string
+}
 type deckPOST = {
   User_ID: string,
   Title: string,
   Description?: string
+  id?: ObjectId
 }
 
 type postResponseBody = {
@@ -22,4 +30,4 @@ type postResponse = {
   status: number
 }
 
-export type {  cardPOST, deckPOST , postResponse };
+export type { deckGET, cardPOST, deckPOST , postResponse };
