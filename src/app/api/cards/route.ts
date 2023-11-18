@@ -29,13 +29,13 @@ export async function POST(request: Request) {
 
     let res: cardPOST[] = await request.json();
 
-    console.log(res);
-
+    console.log(typeof res);
+  
     for (let card of res) {
       if ((await cleanCards(card)) === false) {
         return NextResponse.json(
           { error: "Invalid data provided" },
-          { status: 400 }
+          { status: 401 }
         );
       }
     }

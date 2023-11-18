@@ -1,33 +1,41 @@
 import { ObjectId } from "mongodb";
 
 type cardPOST = {
-  Deck_ID: string,
-  FrontText: string,
-  BackText: string,
-  id?: ObjectId
-}
+  Deck_ID: string;
+  FrontText: string;
+  BackText: string;
+  id?: ObjectId;
+};
 
 type deckGET = {
-  User_ID: string,
-  Title: string,
-  Description?: string
-  id: string
-}
+  User_ID: string;
+  Title: string;
+  Description?: string;
+  id: string;
+};
+
+type cardGET = {
+  Deck_ID: string;
+  FrontText: string;
+  BackText: string;
+  _id: string;
+};
+
 type deckPOST = {
-  User_ID: string,
-  Title: string,
-  Description?: string
-  id?: ObjectId
-}
+  User_ID: string;
+  Title: string;
+  Description?: string;
+  id?: ObjectId;
+};
 
 type postResponseBody = {
-  message: string,
-  id?: ObjectId
-}
+  message: string;
+  id?: ObjectId;
+};
 
 type postResponse = {
-  body: postResponseBody,
-  status: number
-}
+  body: postResponseBody;
+  status: number;
+};
 
-export type { deckGET, cardPOST, deckPOST , postResponse };
+export type { deckGET, cardGET, cardPOST, deckPOST, postResponse };
