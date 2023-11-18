@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { cardPOST, deckPOST } from "../helpers/types";
+import { Input } from "@nextui-org/react";
 import axios from "axios";
 
 export default function App() {
@@ -38,7 +39,6 @@ export default function App() {
 
     let cardPostData: cardPOST[] = [];
     
-
     console.log(deckPostData)
     let id = axios
       .post("/api/decks", deckPostData, {
