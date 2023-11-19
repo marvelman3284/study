@@ -35,7 +35,7 @@ export default function App({ params }: { params: { title: string } }) {
     
   }
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div>

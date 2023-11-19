@@ -16,7 +16,6 @@ export async function cleanCards(cardData: cardPOST) {
   const decks = database.collection("Sets");
 
   const ids = await decks.distinct("_id");
-  console.log(ids);
   let valid_id = false;
 
   for (let id of ids) {

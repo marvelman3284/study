@@ -10,9 +10,8 @@ export default function App() {
   const [formData, setFormData] = useState<cardPOST[]>([
     { Deck_ID: uuidv4(), FrontText: "", BackText: "" },
   ]);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [deckID, setDeckID] = useState("");
 
   const router = useRouter();
 
@@ -60,8 +59,6 @@ export default function App() {
         return data.body.id;
       });
 
-    console.log(deckID);
-
     for (let part of formData) {
       cardPostData.push({
         Deck_ID: await id,
@@ -70,9 +67,9 @@ export default function App() {
       });
     }
 
-    setDeckID(cardPostData[0].Deck_ID);
+    let searchID = (cardPostData[0].Deck_ID);
 
-    console.log(deckID);
+    console.log(searchID);
 
     console.log(`#########`);
     console.log(cardPostData);
@@ -88,7 +85,7 @@ export default function App() {
         console.log(data.status);
       });
 
-    router.replace(`/deck/${deckPostData.Title}?id=${deckID}`);
+    router.replace(`/deck/${deckPostData.Title}?id=${searchID}`);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,67 +97,46 @@ export default function App() {
   };
 
   return (
-    <>
-      <form>
-      <div className="flex flex-wrap md:flex-nowrap gap-4 m-5">
-        <Input
-          isRequired
-          color="primary"
-          type="text"
-          placeholder="My Amazing Deck"
-          label="Deck Title"
-          value={title}
-          onChange={handleTitleChange}
-        />
-        <Input
-          type="text"
-          color="secondary"
-          placeholder="Description (optional)"
-          value={description}
-          onChange={handleDescChange}
-        />
-      </div>
-      <Divider />
-      <div>
-        {formData.map((item, index) => (
-          <div className="flex items-center flex-wrap md:flex-nowrap gap-4 m-3" key={item.Deck_ID}>
-            <h1 className="font-bold">{index+1}.</h1>
-            <Input
-              isRequired
-              type="text"
-              placeholder="Term"
-              value={item.FrontText}
-              onChange={(e) =>
-                handleInputChange(item.Deck_ID, "FrontText", e.target.value)
-              }
-            />
-            <Input
-              isRequired
-              type="text"
-              placeholder="Definition"
-              value={item.BackText}
-              onChange={(e) =>
-                handleInputChange(item.Deck_ID, "BackText", e.target.value)
-              }
-            />
-            <Button
-              color="danger"
-              onClick={() => handleRemoveRow(item.Deck_ID)}
-            >
-              Remove
-            </Button>
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-center m-3">
-        <Button className="m-2" color="success" type="submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-        <Button className="m-2" color="secondary" onClick={handleAddRow}>
-          Add Card
-        </Button>
-      </div>
-      </form>
-    </>
+    <div>
+      <Input
+        isRequired
+        label="Deck Title"
+        type="text"
+        placeholder="Deck Title"
+        value={title}
+        onChange={handleTitleChange}
+      />
+      <Input
+        type="text"
+        placeholder="Description (optional)"
+        value={description}
+        onChange={handleDescChange}
+      />
+      {formData.map((item) => (
+        <div key={item.Deck_ID}>
+          <input
+            type="text"
+            placeholder="Term"
+            value={item.FrontText}
+            onChange={(e) =>
+              handleInputChange(item.Deck_ID, "FrontText", e.target.value)
+            }
+          />
+          <input
+            type="text"
+            placeholder="Definition"
+            value={item.BackText}
+            onChange={(e) =>
+              handleInputChange(item.Deck_ID, "BackText", e.target.value)
+            }
+          />
+          <button onClick={() => handleRemoveRow(item.Deck_ID)}>Remove</button>
+        </div>
+      ))}
+      <button onClick={handleAddRow}>Add Row</button>
+      <button type="submit" onClick={handleSubmit}>
+        Submit
+      </button>
+    </div>
   );
 }
