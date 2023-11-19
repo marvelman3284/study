@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     let res: cardPOST[] = await request.json();
 
     console.log(typeof res);
-
+    
     for (let card of res) {
       if ((await cleanCards(card)) === false) {
         return NextResponse.json(
