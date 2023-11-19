@@ -114,7 +114,8 @@ export default function App() {
       />
       {formData.map((item) => (
         <div key={item.Deck_ID}>
-          <input
+          <Input
+            isRequired
             type="text"
             placeholder="Term"
             value={item.FrontText}
@@ -122,7 +123,8 @@ export default function App() {
               handleInputChange(item.Deck_ID, "FrontText", e.target.value)
             }
           />
-          <input
+          <Input
+            isRequired
             type="text"
             placeholder="Definition"
             value={item.BackText}
