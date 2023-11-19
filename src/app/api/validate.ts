@@ -5,8 +5,8 @@ export async function cleanCards(cardData: cardPOST) {
   // TODO: this is probably where the latex would be rendered i think?
   // TODO: make sure at least 1 card is being inserted
   if (
-    cardData.FrontText === undefined ||
-    cardData.BackText === undefined ||
+    (cardData.FrontText === undefined || cardData.FrontText === "") ||
+    (cardData.BackText === undefined || cardData.FrontText === "") ||
     cardData.Deck_ID === undefined
   ) {
     return false;
@@ -30,7 +30,7 @@ export async function cleanCards(cardData: cardPOST) {
 }
 
 export async function cleanSets(setData: deckPOST) {
-  if (setData.Title === undefined || setData.User_ID === undefined) {
+  if ((setData.Title === undefined) || (setData.Title === "") || setData.User_ID === undefined) {
     console.log("undef fields")
     return false;
   }

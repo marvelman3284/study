@@ -37,15 +37,20 @@ export async function POST(request: Request) {
   try {
     await client.connect();
 
+    console.log("40");
+
     const database = client.db("studySql");
     const cards = database.collection("Sets");
 
     let res: deckPOST = await request.json();
 
+    console.log('################################')
+    console.log(res);
+
     if ((await cleanSets(res)) === false) {
       let response: postResponse = {
         body: { message: "Error inserting data, invalid data provided"},
-        status: 400
+        status: 403
       }
       return NextResponse.json(response);
     }
