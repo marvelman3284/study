@@ -132,14 +132,14 @@ export default function App() {
                 handleInputChange(item.Deck_ID, "BackText", e.target.value)
               }
             />
-            <button onClick={() => handleRemoveRow(item.Deck_ID)}>
-              Remove
-            </button>
+            <Button color="danger" onClick={() => handleRemoveRow(item.Deck_ID)}>
+              <p className="p-10">Remove Term</p>
+            </Button>
           </div>
         ))}
       </div>
       <div className="flex justify-center m-3">
-        <Button className="m-2" color="success" onClick={handleAddRow}>Add Row</Button>
+        <Button className="m-2" color="success" onClick={handleAddRow}>Add Term</Button>
         <Button className="m-2" color="secondary" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
