@@ -29,10 +29,7 @@ export async function DELETE(request: NextRequest) {
     const deleteCards = await cards.deleteMany(cardQuery);
     const deleteSets = await sets.deleteMany(setQuery);
 
-    console.log(deleteCards.acknowledged)
-    console.log(deleteSets.acknowledged)
-
-    return NextResponse.json({}, { status: 200 });
+    return NextResponse.json({body: `Deck with id ${id} deleted`}, { status: 200 });
 
   } catch (e) {
     console.error(e);

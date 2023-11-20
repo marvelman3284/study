@@ -10,12 +10,12 @@ import {
 import axios from 'axios';
 import { useRouter } from "next/navigation";
 
-export default function DeleteButton(idProp: {id: string}) {
+export default function DeleteButton(props: {title:string, id: string}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
   const handleDelete = () => {
-    axios.delete(`/api/delete?id=${idProp.id}`);
+    axios.delete(`/api/delete/${props.title}?id=${props.id}`);
     
     router.replace(`/view`);
   }
@@ -35,7 +35,7 @@ export default function DeleteButton(idProp: {id: string}) {
                   No, take me back
                 </Button>
 
-                <Button color="danger" variant="light" onPress={handleDelete}>
+                <Button color="danger" onPress={handleDelete}>
                   Yes, delete this deck
                 </Button>
               </ModalFooter>

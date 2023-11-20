@@ -45,7 +45,7 @@ export default function App({ params }: { params: { title: string } }) {
                 <Button color="primary"> Flashcards </Button>
                 <Button color="secondary"> Write </Button>
                 <Button color="warning"> Edit </Button>
-                <DeleteButton id={searchParams.get("id") || ""} />
+                <DeleteButton title={params.title} id={searchParams.get("id") || ""} />
               </ButtonGroup>
             </div>
             {data ? (
