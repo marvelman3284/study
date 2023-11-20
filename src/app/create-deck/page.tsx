@@ -34,58 +34,50 @@ export default function App() {
 
   const handleSubmit = async () => {
     // HACK: user_id needs to be checked and requested when the POST call is made, need to create a getUserInfo() function when user login is implemented
+    try {
+      let deckPostData: deckPOST = {
+        Title: title,
+        Description: description,
+        User_ID: "1",
+      };
 
-    console.log("handle");
-    let deckPostData: deckPOST = {
-      Title: title,
-      Description: description,
-      User_ID: "1",
-    };
+      let cardPostData: cardPOST[] = [];
 
-    let cardPostData: cardPOST[] = [];
+      // BUG: need to implement 400 error handling
 
-    console.log("#############", deckPostData);
+      let id = axios
+        .post("/api/decks", deckPostData, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        })
+        .then(({ data }) => {
+          return data.body.id;
+        });
 
-    // BUG: need to implement 400 error handling
+      for (let part of formData) {
+        cardPostData.push({
+          Deck_ID: await id,
+          BackText: part.BackText,
+          FrontText: part.FrontText,
+        });
+      }
 
-    let id = axios
-      .post("/api/decks", deckPostData, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-      })
-      .then(({ data }) => {
-        return data.body.id;
-      });
+      let searchID = cardPostData[0].Deck_ID;
 
-    for (let part of formData) {
-      cardPostData.push({
-        Deck_ID: await id,
-        BackText: part.BackText,
-        FrontText: part.FrontText,
-      });
+      axios
+        .post("/api/cards", cardPostData, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        })
+
+      router.replace(`/deck/${deckPostData.Title}?id=${searchID}`);
+    } catch (e) {
+      console.error(`Error: ${e}`);
     }
-
-    let searchID = (cardPostData[0].Deck_ID);
-
-    console.log(searchID);
-
-    console.log(`#########`);
-    console.log(cardPostData);
-
-    axios
-      .post("/api/cards", cardPostData, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-      })
-      .then(({ data }) => {
-        console.log(data.status);
-      });
-
-    router.replace(`/deck/${deckPostData.Title}?id=${searchID}`);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,48 +89,61 @@ export default function App() {
   };
 
   return (
-    <div>
-      <Input
-        isRequired
-        label="Deck Title"
-        type="text"
-        placeholder="Deck Title"
-        value={title}
-        onChange={handleTitleChange}
-      />
-      <Input
-        type="text"
-        placeholder="Description (optional)"
-        value={description}
-        onChange={handleDescChange}
-      />
-      {formData.map((item) => (
-        <div key={item.Deck_ID}>
-          <Input
-            isRequired
-            type="text"
-            placeholder="Term"
-            value={item.FrontText}
-            onChange={(e) =>
-              handleInputChange(item.Deck_ID, "FrontText", e.target.value)
-            }
-          />
-          <Input
-            isRequired
-            type="text"
-            placeholder="Definition"
-            value={item.BackText}
-            onChange={(e) =>
-              handleInputChange(item.Deck_ID, "BackText", e.target.value)
-            }
-          />
-          <button onClick={() => handleRemoveRow(item.Deck_ID)}>Remove</button>
-        </div>
-      ))}
-      <button onClick={handleAddRow}>Add Row</button>
-      <button type="submit" onClick={handleSubmit}>
-        Submit
-      </button>
-    </div>
+    <>
+      <div className="flex flex-wrap nd:flex-nowrap gap-4 m-5">
+        <Input
+          isRequired
+          color="primary"
+          label="Deck Title"
+          type="text"
+          placeholder="Deck Title"
+          value={title}
+          onChange={handleTitleChange}
+        />
+        <Input
+          type="text"
+          color="secondary"
+          placeholder="Description (optional)"
+          value={description}
+          onChange={handleDescChange}
+        />
+      </div>
+      <Divider />
+      <div>
+        {formData.map((item, index) => (
+          <div
+            className="flex items-center flex-wrap md:flex-nowrap gap-4 m-3"
+            key={item.Deck_ID}
+          >
+            <h1 className="font-bold">{index + 1}.</h1>
+            <Input
+              type="text"
+              placeholder="Term"
+              value={item.FrontText}
+              onChange={(e) =>
+                handleInputChange(item.Deck_ID, "FrontText", e.target.value)
+              }
+            />
+            <Input
+              type="text"
+              placeholder="Definition"
+              value={item.BackText}
+              onChange={(e) =>
+                handleInputChange(item.Deck_ID, "BackText", e.target.value)
+              }
+            />
+            <button onClick={() => handleRemoveRow(item.Deck_ID)}>
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-center m-3">
+        <Button className="m-2" color="success" onClick={handleAddRow}>Add Row</Button>
+        <Button className="m-2" color="secondary" type="submit" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </div>
+    </>
   );
 }

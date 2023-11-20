@@ -7,17 +7,22 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import axios from 'axios';
+import { useRouter } from "next/navigation";
 
-export default function App() {
+export default function DeleteButton(idProp: {id: string}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const router = useRouter();
 
   const handleDelete = () => {
+    axios.delete(`/api/delete?id=${idProp.id}`);
     
+    router.replace(`/view`);
   }
 
   return (
     <>
-      <Button onPress={onOpen}>Delete Deck</Button>
+      <Button color="danger" onPress={onOpen}>Delete Deck</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
         <ModalContent>
           {(onClose) => (

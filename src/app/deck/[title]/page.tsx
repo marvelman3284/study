@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
+import DeleteButton from "./delete";
 
 export default function App({ params }: { params: { title: string } }) {
   const [data, setData] = useState<cardGET[]>();
@@ -31,12 +32,6 @@ export default function App({ params }: { params: { title: string } }) {
       });
   }, []);
 
-  const handleDelete = () => {
-    
-  }
-
-  // console.log(data);
-
   return (
     <div>
       {!error ? (
@@ -50,7 +45,7 @@ export default function App({ params }: { params: { title: string } }) {
                 <Button color="primary"> Flashcards </Button>
                 <Button color="secondary"> Write </Button>
                 <Button color="warning"> Edit </Button>
-                <Button color="danger" onPress={handleDelete}> Delete </Button>
+                <DeleteButton id={searchParams.get("id") || ""} />
               </ButtonGroup>
             </div>
             {data ? (
