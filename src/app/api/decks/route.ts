@@ -29,7 +29,7 @@ export async function GET() {
 
     return Response.json(res);
   } catch (e) {
-    return Response.json( {body: "error"}, {status: 500})
+    return Response.json( {body: "error", error: `${e}`}, {status: 500})
   }
 }
 

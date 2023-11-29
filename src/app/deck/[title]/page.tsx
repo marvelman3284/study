@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
-import DeleteButton from "./delete";
+import DeleteButton from "@/app/components/delete";
 
 export default function App({ params }: { params: { title: string } }) {
   const [data, setData] = useState<cardGET[]>();
