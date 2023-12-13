@@ -36,7 +36,7 @@ export function Nav() {
         className="flex flex-wrap nd:flex-nowrap"
       >
         <NavbarContent justify="start">
-          <NavbarItem className="hidden lg:flex">
+          <NavbarItem className="flex justify-start p-4 hidden lg:flex">
             <Link color="foreground" href="/">
               <Button
                 isIconOnly

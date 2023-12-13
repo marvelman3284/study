@@ -9,11 +9,12 @@ import {
   Divider,
   Spinner,
   Button,
-  ButtonGroup
+  ButtonGroup,
 } from "@nextui-org/react";
 import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
 import DeleteButton from "@/app/components/delete";
+import Link from "next/link";
 
 export default function App({ params }: { params: { title: string } }) {
   const [data, setData] = useState<cardGET[]>();
@@ -38,14 +39,21 @@ export default function App({ params }: { params: { title: string } }) {
         <>
           <div className={styles.main}>
             <div className={styles.center}>
-              <h1 className={styles.header}>{params.title.toString().replaceAll("%20", " ")}</h1>
+              <h1 className={styles.header}>
+                {params.title.toString().replaceAll("%20", " ")}
+              </h1>
             </div>
             <div className={styles.buttons}>
               <ButtonGroup>
                 <Button color="primary"> Flashcards </Button>
-                <Button color="secondary"> Write </Button>
+                <Button color="secondary">
+                  <Link href={`${params.title}/write?id=${searchParams.get("id")}`}>Write</Link>
+                </Button>
                 <Button color="warning"> Edit </Button>
-                <DeleteButton title={params.title} id={searchParams.get("id") || ""} />
+                <DeleteButton
+                  title={params.title}
+                  id={searchParams.get("id") || ""}
+                />
               </ButtonGroup>
             </div>
             {data ? (
