@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { cardGET } from "@/app/helpers/types";
 import {
-  Spacer,
   Modal,
   ModalContent,
   ModalHeader,
@@ -13,56 +12,27 @@ import {
   Select,
   SelectItem,
   Selection,
-  Input,
-  Card,
-  CardHeader,
-  CardBody,
-  Divider,
 } from "@nextui-org/react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import styles from "./page.module.css";
 import { MdSettings } from "react-icons/md";
-
-
-interface questionType {
-  element: JSX.Element,
-  question: string,
-  answer: string
-}
+import { WriteCard } from "@/app/components/write_card";
 
 export default function App({ params }: { params: { title: string } }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [data, setData] = useState<cardGET[]>([]);
   const [error, setError] = useState<boolean>(false);
   const [answer, setAnswer] = useState<Selection>(new Set([]));
-  const [formData, setFormData] = useState<string>("");
-  const [question, setCurrentQuestion] = useState<questionType>({
-    element: <></>,
-    question: "",
-    answer: ""
-  });
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const [question, setCurrentQuestion] = useState<JSX.Element>();
+
+  const usedQuestions: JSX.Element[] = [];
 
   const searchParams = useSearchParams();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setFormData(e.target.value);
-    setFormData("hi");
+  const updateFormData = (newState: boolean) => {
+    setIsCorrect(newState);
   };
-
-  const handleSubmit =
-    (correct: string) => (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      if (formData === correct) {
-        console.log("correct");
-        setRandomQuestion();
-      } else {
-        console.log("wrong");
-      }
-      console.log("Form submitted with data:", formData);
-    };
 
   useEffect(() => {
     axios
@@ -77,30 +47,10 @@ export default function App({ params }: { params: { title: string } }) {
       });
   }, []);
 
-
   let dataMap = data.map((card) => (
-    <Card key={card._id} className={styles.card}>
-      <CardHeader>
-        {Array.from(answer)[0] === "1" ? card.FrontText : card.BackText}
-      </CardHeader>
-      <Divider />
-      <CardBody>
-        <form
-          onSubmit={handleSubmit(
-            Array.from(answer)[0] === "1" ? card.BackText : card.FrontText,
-          )}
-        >
-          <Input
-            type="text"
-            placeholder="Enter your answer..."
-            onChange={handleInputChange}
-            value={formData}
-          />
-          <Spacer y={1} />
-          <Input type="submit" value="Submit" />
-        </form>
-      </CardBody>
-    </Card>
+    <div key={card._id}>
+      <WriteCard updateState={updateFormData} card={card} answer="def" />
+    </div>
   ));
 
   useEffect(() => {
@@ -109,11 +59,31 @@ export default function App({ params }: { params: { title: string } }) {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log("state changed");
+    if (isCorrect) {
+      setRandomQuestion();
+    }
+  }, [isCorrect]);
+
   const setRandomQuestion = () => {
-    const newQuestion = dataMap[Math.floor(Math.random() * dataMap.length)];
+    if (usedQuestions.length === dataMap.length) {
+      console.log("all questions used");
+      return;
+    }
+
+    let newQuestion = dataMap[Math.floor(Math.random() * dataMap.length)];
+    
+    while (usedQuestions.includes(newQuestion)) {
+      console.log('already used')
+      newQuestion = dataMap[Math.floor(Math.random() * dataMap.length)];
+    }
     console.log("called");
-    setCurrentQuestion({...question, element: newQuestion});
+    setCurrentQuestion(newQuestion);
+    usedQuestions.push(newQuestion);
+    console.log(question);
     console.log(newQuestion);
+    console.log(usedQuestions);
   };
 
   return (
@@ -161,9 +131,7 @@ export default function App({ params }: { params: { title: string } }) {
               </ModalContent>
             </Modal>
           </div>
-          <div className="flex items-center justify-center ">
-            {question.element}
-          </div>
+          <div className="flex items-center justify-center ">{question}</div>
         </div>
       ) : (
         <p>Error</p>
